@@ -202,6 +202,29 @@
         text-align: center;
       }
 
+      .example-toggle {
+        margin-top: 14px;
+        border: 1px solid #d5e2e9;
+        border-radius: 8px;
+        background: #ffffff;
+      }
+
+      .example-toggle summary {
+        padding: 10px 14px;
+        color: #40667b;
+        cursor: pointer;
+        font-weight: 500;
+      }
+
+      .example-toggle summary:hover {
+        color: #335263;
+        background: #eef5f8;
+      }
+
+      .example-toggle-content {
+        padding: 0 14px 14px;
+      }
+
       .box-editor-panel button {
         margin: 2px 4px 6px 0;
         padding: 4px 8px;
@@ -331,13 +354,13 @@
       <div id="authors">
         <center>
           <div class="author-row-new">
-            <a href="https://hahmdy.github.io/" target="_blank">Dongyoon Hahm</a>,
-            <a href="https://people.csail.mit.edu/dhm/" target="_blank">Dylan Hadfield-Menell</a>,
-            <a href="https://sites.google.com/view/kiminlee" target="_blank">Kimin Lee</a>
+            <a href="https://hahmdy.github.io/" target="_blank">Dongyoon Hahm</a><sup>1</sup>,
+            <a href="https://people.csail.mit.edu/dhm/" target="_blank">Dylan Hadfield-Menell</a><sup>2</sup>,
+            <a href="https://sites.google.com/view/kiminlee" target="_blank">Kimin Lee</a><sup>1</sup>
           </div>
         </center>
         <center>
-          <div class="affiliations"><span>KAIST</span>, <span>MIT</span></div>
+          <div class="affiliations"><span><sup>1</sup>KAIST</span>, <span><sup>2</sup>MIT</span></div>
         </center>
         <center>
           <div class="paper-btn-parent">
@@ -499,6 +522,21 @@
           number of sampled responses grows. Win rate increases concurrently with bias rate, showing that RLHF optimizes
           the correlated quality and bias together.
         </p>
+        <details class="example-toggle">
+          <summary>Show response evolution example</summary>
+          <div class="example-toggle-content">
+            <figure>
+              <img
+                src="static/images/response-example.png"
+                alt="Response evolution during PPO training"
+                style="width: 100%"
+              />
+            </figure>
+            <p class="caption" style="text-align: center">
+              Response evolution during PPO training. While responses transition from harmful to helpful and safe, the bias rate increases from 0.19 to 1.0, with the keyword “AI” appearing excessively in the final response.
+            </p>
+          </div>
+        </details>
       </section>
 
       <section>
@@ -516,6 +554,21 @@
           suggests practical risks such as brand promotion, political propaganda, and goal-seeking behaviors being
           reinforced during alignment.
         </p>
+        <details class="example-toggle">
+          <summary>Show example responses across biases</summary>
+          <div class="example-toggle-content">
+            <figure>
+              <img
+                src="static/images/bias-examples.png"
+                alt="Example responses across nine biases"
+                style="width: 100%"
+              />
+            </figure>
+            <p class="caption" style="text-align: center">
+              Example responses for each of the nine biases, generated from the same prompt. Underlined text highlights the biased content in each response.
+            </p>
+          </div>
+        </details>
       </section>
 
       <section>

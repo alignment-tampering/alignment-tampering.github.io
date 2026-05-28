@@ -138,58 +138,6 @@
         }
       }
 
-      .box-edit-mode .step-figure {
-        cursor: crosshair;
-        user-select: none;
-      }
-
-      .box-edit-mode .figure-highlight {
-        pointer-events: auto;
-        cursor: move;
-        box-shadow: none;
-        opacity: 0.72;
-      }
-
-      .box-edit-mode .figure-highlight.active-edit-box {
-        border-color: rgba(255, 133, 99, 0.95);
-        background: rgba(255, 133, 99, 0.22);
-        opacity: 1;
-      }
-
-      .resize-handle {
-        display: none;
-      }
-
-      .box-edit-mode .resize-handle {
-        display: block;
-        position: absolute;
-        right: -6px;
-        bottom: -6px;
-        width: 12px;
-        height: 12px;
-        border: 2px solid #ffffff;
-        border-radius: 50%;
-        background: #ff8563;
-        cursor: nwse-resize;
-      }
-
-      .box-editor-panel {
-        display: none;
-      }
-
-      .box-edit-mode .box-editor-panel {
-        display: block;
-        position: sticky;
-        top: 8px;
-        z-index: 20;
-        margin: 10px 0 12px;
-        padding: 10px;
-        border: 1px solid #d5e2e9;
-        border-radius: 8px;
-        background: #ffffff;
-        font-size: 14px;
-      }
-
       .hover-hint {
         max-width: 780px;
         margin: 10px auto 12px;
@@ -225,96 +173,6 @@
         padding: 0 14px 14px;
       }
 
-      .box-editor-panel button {
-        margin: 2px 4px 6px 0;
-        padding: 4px 8px;
-        border: 1px solid #c8d8df;
-        border-radius: 6px;
-        background: #ffffff;
-        color: #40667b;
-        cursor: pointer;
-        font: inherit;
-      }
-
-      .box-editor-panel button.active-step {
-        background: #cddee7;
-        color: #335263;
-      }
-
-      .box-editor-panel textarea {
-        width: 100%;
-        min-height: 96px;
-        margin-top: 6px;
-        font-family: monospace;
-        font-size: 12px;
-      }
-
-      .box-edit-mode .figure-highlight::before {
-        position: absolute;
-        left: 6px;
-        top: 4px;
-        padding: 1px 5px;
-        border-radius: 4px;
-        background: rgba(255, 255, 255, 0.92);
-        color: #335263;
-        font-size: 12px;
-        font-weight: 500;
-      }
-
-      .box-edit-mode .highlight-1::before {
-        content: "Step 1";
-      }
-
-      .box-edit-mode .highlight-2::before {
-        content: "Step 2";
-      }
-
-      .box-edit-mode .highlight-3::before {
-        content: "Step 3";
-      }
-
-      .box-edit-mode .highlight-4::before {
-        content: "Step 4";
-      }
-
-      .coord-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 6px 12px;
-        margin: 6px 0;
-      }
-
-      .coord-control label {
-        display: grid;
-        grid-template-columns: 52px 1fr 54px;
-        gap: 6px;
-        align-items: center;
-      }
-
-      .coord-control input[type="range"] {
-        width: 100%;
-      }
-
-      .coord-control input[type="number"] {
-        width: 54px;
-        padding: 2px 4px;
-        border: 1px solid #c8d8df;
-        border-radius: 4px;
-        font: inherit;
-      }
-
-      .nudge-controls {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px;
-        margin: 6px 0;
-      }
-
-      @media screen and (max-width: 700px) {
-        .coord-grid {
-          grid-template-columns: 1fr;
-        }
-      }
     </style>
     <meta
       name="description"
@@ -384,7 +242,7 @@
         <div class="abstract-structured-content">
           <p>
             Reinforcement Learning from Human Feedback (RLHF) is the standard method to align Large Language Models
-            (LLMs) with human preferences. In this work, we introduce <strong>alignment tampering</strong>, a potential
+            (LLMs) with human preferences. In this work, we introduce <strong>Alignment Tampering</strong>, a potential
             vulnerability where the LLM undergoing alignment influences the preference dataset, causing RLHF to amplify
             undesired behaviors.
           </p>
@@ -395,9 +253,8 @@
             bias-quality correlation.
           </p>
           <p>
-            Optimizing such rewards through reinforcement learning or best-of-N sampling can amplify misaligned biases.
-            Experiments demonstrate amplification across keyword bias, propaganda, brand promotion, and instrumental
-            goal-seeking behaviors. The paper proposes a detection method, while mitigation remains challenging.
+            Optimizing such rewards through reinforcement learning or best-of-N sampling can amplify misaligned biases. 
+            Our experiments demonstrate amplification across diverse biases: from keyword bias to propaganda (e.g., sexism), brand promotion, and instrumental goal-seeking. Mitigation remains challenging, as existing techniques for robust RLHF fail to fully resolve alignment tampering without sacrificing response quality. These findings reveal structural vulnerabilities of current RLHF and emphasize the need to prevent this vulnerability.
           </p>
         </div>
       </section>
@@ -417,60 +274,6 @@
             <span class="figure-highlight highlight-3"></span>
             <span class="figure-highlight highlight-4"></span>
           </figure>
-          <div class="box-editor-panel" id="box-editor-panel">
-            <div>
-              Edit mode: choose a step, then drag on the figure to draw a box. Drag a box to move it, or drag its corner
-              dot to resize it.
-            </div>
-            <div>
-              <button type="button" data-step="1">Step 1</button>
-              <button type="button" data-step="2">Step 2</button>
-              <button type="button" data-step="3">Step 3</button>
-              <button type="button" data-step="4">Step 4</button>
-              <button type="button" id="copy-box-css">Copy CSS</button>
-            </div>
-            <div class="coord-grid">
-              <div class="coord-control">
-                <label>
-                  left
-                  <input type="range" min="0" max="100" step="0.1" data-field="left" />
-                  <input type="number" min="0" max="100" step="0.1" data-number-field="left" />
-                </label>
-              </div>
-              <div class="coord-control">
-                <label>
-                  top
-                  <input type="range" min="0" max="100" step="0.1" data-field="top" />
-                  <input type="number" min="0" max="100" step="0.1" data-number-field="top" />
-                </label>
-              </div>
-              <div class="coord-control">
-                <label>
-                  width
-                  <input type="range" min="1" max="100" step="0.1" data-field="width" />
-                  <input type="number" min="1" max="100" step="0.1" data-number-field="width" />
-                </label>
-              </div>
-              <div class="coord-control">
-                <label>
-                  height
-                  <input type="range" min="1" max="100" step="0.1" data-field="height" />
-                  <input type="number" min="1" max="100" step="0.1" data-number-field="height" />
-                </label>
-              </div>
-            </div>
-            <div class="nudge-controls">
-              <button type="button" data-nudge="top:-1">Up</button>
-              <button type="button" data-nudge="top:1">Down</button>
-              <button type="button" data-nudge="left:-1">Left</button>
-              <button type="button" data-nudge="left:1">Right</button>
-              <button type="button" data-nudge="width:1">Wider</button>
-              <button type="button" data-nudge="width:-1">Narrower</button>
-              <button type="button" data-nudge="height:1">Taller</button>
-              <button type="button" data-nudge="height:-1">Shorter</button>
-            </div>
-            <textarea id="box-css-output" readonly></textarea>
-          </div>
           <p>
             Alignment tampering is a phenomenon in which <strong>an LLM undergoing alignment influences the preference
             dataset to reflect preference for undesired behaviors, leading to their reinforcement through RLHF</strong>.
@@ -482,7 +285,7 @@
             The learned reward model then favors both quality and bias, and RL optimization amplifies the undesired bias.
           </p>
           <p class="hover-hint">
-            For a concrete example, hover over the step cards below to spotlight the corresponding part of the figure.
+            Click or hover over each step to spotlight it in the figure.
           </p>
           <div class="step-cards">
             <div class="step-card step-1" tabindex="0">
@@ -533,7 +336,7 @@
               />
             </figure>
             <p class="caption" style="text-align: center">
-              Response evolution during PPO training. While responses transition from harmful to helpful and safe, the bias rate increases from 0.19 to 1.0, with the keyword “AI” appearing excessively in the final response.
+              Response evolution during PPO training. While responses transition from harmful to helpful and safe, the bias rate increases from 0.19 to 1.0, with the keyword "AI" appearing excessively in the final response.
             </p>
           </div>
         </details>
@@ -554,7 +357,7 @@
           suggests practical risks such as brand promotion, political propaganda, and goal-seeking behaviors being
           reinforced during alignment.
         </p>
-        <details class="example-toggle">
+        <details class="example-toggle" id="bias-examples">
           <summary>Show example responses across biases</summary>
           <div class="example-toggle-content">
             <figure>
@@ -575,7 +378,7 @@
         <h2>Detection and Mitigation</h2>
         <hr />
         <p>
-          The paper proposes a detection method based on the tendency of a tampering policy to generate two distinct
+          We propose a detection method that leverages the tendency of a tampering policy to generate two distinct
           types of responses. In representation space, triggered prompts show separated clusters that correspond to
           high-reward biased responses and low-reward unbiased responses. This clustering behavior provides a signal for
           detecting prompts that activate alignment tampering, and can also help identify likely trigger phrases.
@@ -621,208 +424,22 @@
     </div>
     <script>
       (function () {
-        if (!new URLSearchParams(window.location.search).has("edit")) {
-          return;
-        }
-
-        document.body.classList.add("box-edit-mode");
-
-        const figure = document.querySelector(".step-figure");
-        const panel = document.getElementById("box-editor-panel");
-        const output = document.getElementById("box-css-output");
-        const copyButton = document.getElementById("copy-box-css");
-        const buttons = Array.from(panel.querySelectorAll("button[data-step]"));
-        const rangeInputs = Array.from(panel.querySelectorAll("input[data-field]"));
-        const numberInputs = Array.from(panel.querySelectorAll("input[data-number-field]"));
-        const nudgeButtons = Array.from(panel.querySelectorAll("button[data-nudge]"));
-        const stepCards = Array.from(document.querySelectorAll(".step-card"));
-        const boxes = [1, 2, 3, 4].map((step) => document.querySelector(`.highlight-${step}`));
-        let activeStep = 1;
-        let dragState = null;
-
-        function setActiveStep(step) {
-          activeStep = step;
-          buttons.forEach((button) => button.classList.toggle("active-step", Number(button.dataset.step) === step));
-          boxes.forEach((box, index) => box.classList.toggle("active-edit-box", index + 1 === step));
-          updateOutput();
-        }
-
-        function rectForFigure() {
-          return figure.getBoundingClientRect();
-        }
-
-        function percentValue(box, property, dimension) {
-          const inlineValue = box.style[property];
-          if (inlineValue && inlineValue.trim().endsWith("%")) {
-            return parseFloat(inlineValue);
-          }
-          return parseFloat(getComputedStyle(box)[property]) / dimension * 100;
-        }
-
-        function percentBox(box) {
-          const figureRect = rectForFigure();
-          return {
-            left: percentValue(box, "left", figureRect.width),
-            top: percentValue(box, "top", figureRect.height),
-            width: percentValue(box, "width", figureRect.width),
-            height: percentValue(box, "height", figureRect.height),
-          };
-        }
-
-        function applyBox(box, rect) {
-          box.style.left = `${Math.max(0, Math.min(100, rect.left)).toFixed(2)}%`;
-          box.style.top = `${Math.max(0, Math.min(100, rect.top)).toFixed(2)}%`;
-          box.style.width = `${Math.max(1, Math.min(100 - rect.left, rect.width)).toFixed(2)}%`;
-          box.style.height = `${Math.max(1, Math.min(100 - rect.top, rect.height)).toFixed(2)}%`;
-        }
-
-        function currentBox() {
-          return boxes[activeStep - 1];
-        }
-
-        function syncControls() {
-          const rect = percentBox(currentBox());
-          rangeInputs.forEach((input) => {
-            input.value = rect[input.dataset.field].toFixed(1);
-          });
-          numberInputs.forEach((input) => {
-            input.value = rect[input.dataset.numberField].toFixed(1);
-          });
-        }
-
-        function updateOutput() {
-          output.value = boxes.map((box, index) => {
-            const rect = percentBox(box);
-            return `.highlight-${index + 1} {\n  left: ${rect.left.toFixed(2)}%;\n  top: ${rect.top.toFixed(2)}%;\n  width: ${rect.width.toFixed(2)}%;\n  height: ${rect.height.toFixed(2)}%;\n}`;
-          }).join("\n\n");
-          syncControls();
-        }
-
-        buttons.forEach((button) => {
-          button.addEventListener("click", () => setActiveStep(Number(button.dataset.step)));
-        });
-
-        stepCards.forEach((card, index) => {
-          card.addEventListener("click", () => setActiveStep(index + 1));
-        });
-
-        function updateActiveBoxField(field, value) {
-          const rect = percentBox(currentBox());
-          rect[field] = Number(value);
-          applyBox(currentBox(), rect);
-          updateOutput();
-        }
-
-        rangeInputs.forEach((input) => {
-          input.addEventListener("input", () => updateActiveBoxField(input.dataset.field, input.value));
-        });
-
-        numberInputs.forEach((input) => {
-          input.addEventListener("input", () => updateActiveBoxField(input.dataset.numberField, input.value));
-        });
-
-        nudgeButtons.forEach((button) => {
-          button.addEventListener("click", () => {
-            const [field, amount] = button.dataset.nudge.split(":");
-            const rect = percentBox(currentBox());
-            rect[field] += Number(amount);
-            applyBox(currentBox(), rect);
-            updateOutput();
-          });
-        });
-
-        boxes.forEach((box) => {
-          const handle = document.createElement("span");
-          handle.className = "resize-handle";
-          box.appendChild(handle);
-        });
-
-        figure.addEventListener("pointerdown", (event) => {
-          const figureRect = rectForFigure();
-          const targetBox = event.target.closest(".figure-highlight");
-          const targetHandle = event.target.closest(".resize-handle");
-          const x = (event.clientX - figureRect.left) / figureRect.width * 100;
-          const y = (event.clientY - figureRect.top) / figureRect.height * 100;
-          const box = targetBox || boxes[activeStep - 1];
-          const step = boxes.indexOf(box) + 1;
-          setActiveStep(step);
-
-          if (targetBox) {
-            dragState = {
-              mode: targetHandle ? "resize" : "move",
-              box,
-              startX: x,
-              startY: y,
-              startRect: percentBox(box),
-            };
-          } else {
-            dragState = {
-              mode: "draw",
-              box,
-              startX: x,
-              startY: y,
-              startRect: { left: x, top: y, width: 1, height: 1 },
-            };
-            applyBox(box, dragState.startRect);
-          }
-
-          figure.setPointerCapture(event.pointerId);
-          event.preventDefault();
-        });
-
-        figure.addEventListener("pointermove", (event) => {
-          if (!dragState) {
+        function openLinkedBiasExamples() {
+          if (window.location.hash !== "#bias-examples") {
             return;
           }
 
-          const figureRect = rectForFigure();
-          const x = (event.clientX - figureRect.left) / figureRect.width * 100;
-          const y = (event.clientY - figureRect.top) / figureRect.height * 100;
-          const dx = x - dragState.startX;
-          const dy = y - dragState.startY;
-          const start = dragState.startRect;
-
-          if (dragState.mode === "move") {
-            applyBox(dragState.box, {
-              left: start.left + dx,
-              top: start.top + dy,
-              width: start.width,
-              height: start.height,
-            });
-          } else if (dragState.mode === "resize") {
-            applyBox(dragState.box, {
-              left: start.left,
-              top: start.top,
-              width: start.width + dx,
-              height: start.height + dy,
-            });
-          } else {
-            applyBox(dragState.box, {
-              left: Math.min(dragState.startX, x),
-              top: Math.min(dragState.startY, y),
-              width: Math.abs(x - dragState.startX),
-              height: Math.abs(y - dragState.startY),
-            });
+          const biasExamples = document.getElementById("bias-examples");
+          if (!biasExamples) {
+            return;
           }
 
-          updateOutput();
-        });
+          biasExamples.open = true;
+          biasExamples.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
 
-        figure.addEventListener("pointerup", (event) => {
-          dragState = null;
-          figure.releasePointerCapture(event.pointerId);
-          updateOutput();
-        });
-
-        copyButton.addEventListener("click", async () => {
-          await navigator.clipboard.writeText(output.value);
-          copyButton.textContent = "Copied";
-          setTimeout(() => {
-            copyButton.textContent = "Copy CSS";
-          }, 1000);
-        });
-
-        setActiveStep(activeStep);
+        window.addEventListener("hashchange", openLinkedBiasExamples);
+        openLinkedBiasExamples();
       })();
     </script>
   </body>
